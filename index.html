@@ -6,7 +6,7 @@
     <title>Olga 18</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        body, html {
+                body, html {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -35,7 +35,7 @@
             align-items: center;
             
             border-radius: 50%;
-            transition: all 1s ease; *
+            transition: all 0.8s ease; *
             cursor: pointer;
             border: 2px solid transparent;
         }
@@ -49,8 +49,8 @@
             font-size: 15vw;
             color: transparent;
             text-decoration: none;
-            transition: color 1s ease;
-            transition-delay: 0.2s;
+            transition: color 2s ease;
+            transition-delay: 0.4s;
             cursor: pointer;
         }
         .number-wrapper:hover .number {
@@ -90,19 +90,8 @@
         .number-6, .number-0, .number-2 {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: 14vw;
+            font-size: 15vw;
             color: #B8860B;
-        }
-
-        .number-0{
-            margin-top: -110px;
-        }
-        .number-6{
-            margin-top: -70px;
-        }
-
-        .number-2{
-            margin-top: -70px;
         }
         .back-button {
             position: absolute;
@@ -129,7 +118,26 @@
         }
 
         .map {
-            width: 1300px;
+            width: 1600px;
+            height: auto;
+        }
+
+        .full-screen-number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 20vw;
+            color: #B8860B;
+        }
+
+        span{
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        .pudelko{
+            width: 600px;
             height: auto;
         }
     </style>
@@ -149,13 +157,13 @@
             switch(pageNumber) {
                 case 'home':
                     pageContent = `
-                        <div class="number-container">
-                            <div class="number-wrapper" onclick="loadPage(1)"><span class="number">1</span></div>
-                            <div class="number-wrapper" onclick="loadPage(2)"><span class="number">2</span></div>
-                            <div class="number-wrapper" onclick="loadPage(3)"><span class="number">3</span></div>
-                            <div class="number-wrapper" onclick="loadPage(4)"><span class="number">4</span></div>
-                        </div>
-                    `;
+                            <div class="number-container">
+                                <div class="number-wrapper" onclick="loadPage(1)"><span class="number">1</span></div>
+                                <div class="number-wrapper" onclick="loadPage(2)"><span class="number">2</span></div>
+                                <div class="number-wrapper" onclick="loadPage(3)"><span class="number">3</span></div>
+                                <div class="number-wrapper" onclick="loadPage(4)"><span class="number">4</span></div>
+                            </div>
+                        `;
                     break;
                 case 1:
                     pageContent = `
@@ -164,7 +172,6 @@
                         <button onclick="check1()">SPRAWDŹ</button>
                         <button onclick="showHint1()">PODPOWIEDŹ</button>
                         <div id="hint1"></div>
-                        <div id="result"></div>
                         ${backButton}
                     `;
                     break;
@@ -174,8 +181,7 @@
                         <input type="text" id="input2">
                         <button onclick="check2()">SPRAWDŹ</button>
                         <button onclick="showHint2()">PODPOWIEDŹ</button>
-                        <div id="hint2"></div>
-                        <div id="result"></div>
+                        <a href="https://pl.distance.to" target="_blank" id="hint2"></a>
                         ${backButton}
                     `;
                     break;
@@ -188,25 +194,33 @@
                         <button onclick="showHint3('hint3_2')">PODPOWIEDŹ 2</button>
                         <div id="hint3"></div>
                         <div id="hint3_2"></div>
-                        <div id="result"></div>
                         ${backButton}
                     `;
                     break;
                 case 4:
                     pageContent = `
-                        <img src="/api/placeholder/600/400" alt="Duże zdjęcie">
-                        <p>Gdy znajdziesz ostatnią cyfrę kliknij poniższy przycisk:</p>
-                        <button onclick="loadPage('almostDone')">JUŻ PRAWIE</button>
-                        ${backButton}
-                    `;
+                            <img class="pudelko" src="/public/pudelko.jpg" alt="Duże zdjęcie">
+                            <p>Gdy znajdziesz ostatnią cyfrę kliknij poniższy przycisk:</p>
+                            <button onclick="loadPage('almostDone')">MAM CYFRĘ!</button>
+                            <button onclick="showHint4('hint4')">PODPOWIEDŹ</button>
+                            <div id="hint4"></div>
+                            ${backButton}
+                        `;
                     break;
                 case 'almostDone':
                     pageContent = `
-                        <p>Gratulacje! Masz już wszystkie cyfry! Nie znasz jednak kolejności cyfr. Masz 24 kombinacje do sprawdzenia :) Możesz jednak skorzystać z dwóch podpowiedzi.</p>
-                        <button onclick="showHint('hint1')">PODPOWIEDŹ 1</button>
-                        <button onclick="showHint('hint2')">PODPOWIEDŹ 2</button>
-                        <div id="hint1"></div>
-                        <div id="hint2"></div>
+                            <span>Gratulacje! Masz już wszystkie cyfry! Nie znasz jednak kolejności cyfr. Masz 24 kombinacje do sprawdzenia :) </span><p>Możesz jednak skorzystać z dwóch podpowiedzi.</p>
+                            <button onclick="showHint('hint1')">PODPOWIEDŹ 1</button>
+                            <button onclick="showHint('hint2')">PODPOWIEDŹ 2</button>
+                            <div id="hint1"></div>
+                            <div id="hint2"></div>
+                            ${backButton}
+                        `;
+                    break;
+                case 'showNumber':
+                    const number = sessionStorage.getItem('correctNumber');
+                    pageContent = `
+                        <div class="full-screen-number">${number}</div>
                         ${backButton}
                     `;
                     break;
@@ -216,11 +230,31 @@
 
         function check1() {
             const input = document.getElementById('input1').value;
-            const result = document.getElementById('result');
             if (input === "626") {
-                result.innerHTML = '<div class="number-6">6</div>';
+                sessionStorage.setItem('correctNumber', '6');
+                loadPage('showNumber');
             } else {
-                result.innerHTML = 'BŁĄD';
+                alert('BŁĄD');
+            }
+        }
+
+        function check2() {
+            const input = document.getElementById('input2').value;
+            if (input === "8106,17") {
+                sessionStorage.setItem('correctNumber', '0');
+                loadPage('showNumber');
+            } else {
+                alert('BŁĄD');
+            }
+        }
+
+        function check3() {
+            const input = document.getElementById('input3').value;
+            if (input.toLowerCase() === "kostka") {
+                sessionStorage.setItem('correctNumber', '2');
+                loadPage('showNumber');
+            } else {
+                alert('BŁĄD');
             }
         }
 
@@ -228,28 +262,8 @@
             document.getElementById('hint1').innerText = "Eksperyment";
         }
 
-        function check2() {
-            const input = document.getElementById('input2').value;
-            const result = document.getElementById('result');
-            if (input === "8106,17") {
-                result.innerHTML = '<div class="number-0">0</div>';
-            } else {
-                result.innerHTML = 'BŁĄD';
-            }
-        }
-
         function showHint2() {
             document.getElementById('hint2').innerText = "https://pl.distance.to";
-        }
-
-        function check3() {
-            const input = document.getElementById('input3').value;
-            const result = document.getElementById('result');
-            if (input.toLowerCase() === "kostka") {
-                result.innerHTML = '<div class="number-2">2</div>';
-            } else {
-                result.innerHTML = 'BŁĄD';
-            }
         }
 
         function showHint3(hintId) {
@@ -269,6 +283,11 @@
                 hint.innerText = "29.09.2006";
             }
         }
+
+        function showHint4() {
+            document.getElementById('hint4').innerText = "Kasia";
+        }
+
 
         // Załaduj stronę główną na początku
         loadPage('home');
