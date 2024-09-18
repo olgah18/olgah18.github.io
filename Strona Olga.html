@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktywna Strona</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+            color: white;
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+        }
+        .number-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+        }
+        .number-wrapper {
+            width: 20vw;
+            height: 20vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            border-radius: 50%;
+            transition: all 1.5s ease; *
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .number-wrapper:hover {
+            /* border-color: #B8860B; */
+            border-color: rgba(184, 134, 11, 0.3);
+            cursor: pointer;
+        }
+        .number {
+            margin-top: -4vw;
+            font-size: 15vw;
+            color: transparent;
+            text-decoration: none;
+            transition: color 2s ease;
+            transition-delay: 0.5s;
+            cursor: pointer;
+        }
+        .number-wrapper:hover .number {
+            color: #B8860B;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 18px;
+            width: 80%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            background-color: #B8860B;
+            color: black;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #DAA520;
+        }
+        #result {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        .number-6, .number-0, .number-2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 15vw;
+            color: #B8860B;
+        }
+        .back-button {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+        p {
+            margin: 20px 0;
+            font-size: 18px;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div id="content" class="content-container">
+        <!-- Zawartość będzie dynamicznie wstawiana tutaj -->
+    </div>
+
+    <script>
+        const content = document.getElementById('content');
+
+        function loadPage(pageNumber) {
+            let pageContent = '';
+            const backButton = '<button class="back-button" onclick="loadPage(\'home\')">WSTECZ</button>';
+
+            switch(pageNumber) {
+                case 'home':
+                    pageContent = `
+                        <div class="number-container">
+                            <div class="number-wrapper" onclick="loadPage(1)"><span class="number">1</span></div>
+                            <div class="number-wrapper" onclick="loadPage(2)"><span class="number">2</span></div>
+                            <div class="number-wrapper" onclick="loadPage(3)"><span class="number">3</span></div>
+                            <div class="number-wrapper" onclick="loadPage(4)"><span class="number">4</span></div>
+                        </div>
+                    `;
+                    break;
+                case 1:
+                    pageContent = `
+                        <img src="/api/placeholder/300/300" alt="Stich">
+                        <input type="text" id="input1">
+                        <button onclick="check1()">SPRAWDŹ</button>
+                        <div id="result"></div>
+                        ${backButton}
+                    `;
+                    break;
+                case 2:
+                    pageContent = `
+                        <img src="/api/placeholder/300/300" alt="Mapa">
+                        <input type="text" id="input2">
+                        <button onclick="check2()">SPRAWDŹ</button>
+                        <button onclick="showHint2()">PODPOWIEDŹ</button>
+                        <div id="hint2"></div>
+                        <div id="result"></div>
+                        ${backButton}
+                    `;
+                    break;
+                case 3:
+                    pageContent = `
+                        <p>Pierwszy prezent jaki ode mnie dostałaś na urodziny</p>
+                        <input type="text" id="input3">
+                        <button onclick="check3()">SPRAWDŹ</button>
+                        <button onclick="showHint3()">PODPOWIEDŹ</button>
+                        <div id="hint3"></div>
+                        <div id="result"></div>
+                        ${backButton}
+                    `;
+                    break;
+                case 4:
+                    pageContent = `
+                        <img src="/api/placeholder/600/400" alt="Duże zdjęcie">
+                        <p>Gdy znajdziesz ostatnią cyfrę kliknij poniższy przycisk:</p>
+                        <button onclick="loadPage('almostDone')">JUŻ PRAWIE</button>
+                        ${backButton}
+                    `;
+                    break;
+                case 'almostDone':
+                    pageContent = `
+                        <p>Gratulacje! Masz już wszystkie cyfry! Nie znasz jednak kolejności cyfr. Masz 24 kombinacje do sprawdzenia :) Możesz jednak skorzystać z dwóch podpowiedzi.</p>
+                        <button onclick="showHint('hint1')">PODPOWIEDŹ 1</button>
+                        <button onclick="showHint('hint2')">PODPOWIEDŹ 2</button>
+                        <div id="hint1"></div>
+                        <div id="hint2"></div>
+                        ${backButton}
+                    `;
+                    break;
+            }
+            content.innerHTML = pageContent;
+        }
+
+        function check1() {
+            const input = document.getElementById('input1').value;
+            const result = document.getElementById('result');
+            if (input === "626") {
+                result.innerHTML = '<div class="number-6">6</div>';
+            } else {
+                result.innerHTML = 'BŁĄD';
+            }
+        }
+
+        function check2() {
+            const input = document.getElementById('input2').value;
+            const result = document.getElementById('result');
+            if (input === "8106,17") {
+                result.innerHTML = '<div class="number-0">0</div>';
+            } else {
+                result.innerHTML = 'BŁĄD';
+            }
+        }
+
+        function showHint2() {
+            document.getElementById('hint2').innerText = "https://pl.distance.to";
+        }
+
+        function check3() {
+            const input = document.getElementById('input3').value;
+            const result = document.getElementById('result');
+            if (input.toLowerCase() === "kostka") {
+                result.innerHTML = '<div class="number-2">2</div>';
+            } else {
+                result.innerHTML = 'BŁĄD';
+            }
+        }
+
+        function showHint3() {
+            document.getElementById('hint3').innerText = "Album ze zdjęciami";
+        }
+
+        function showHint(hintId) {
+            const hint = document.getElementById(hintId);
+            if (hintId === 'hint1') {
+                hint.innerText = "GODZINA";
+            } else if (hintId === 'hint2') {
+                hint.innerText = "29.09.2006";
+            }
+        }
+
+        // Załaduj stronę główną na początku
+        loadPage('home');
+    </script>
+</body>
+</html>
