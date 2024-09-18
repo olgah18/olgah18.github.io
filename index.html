@@ -151,6 +151,8 @@
                         <img class="stich" src="public/Stich.png" alt="Stich">
                         <input type="text" id="input1">
                         <button onclick="check1()">SPRAWDŹ</button>
+                        <button onclick="showHint1()">PODPOWIEDŹ</button>
+                        <div id="hint1"></div>
                         <div id="result"></div>
                         ${backButton}
                     `;
@@ -171,8 +173,10 @@
                         <p>Pierwszy prezent jaki ode mnie dostałaś na urodziny</p>
                         <input type="text" id="input3">
                         <button onclick="check3()">SPRAWDŹ</button>
-                        <button onclick="showHint3()">PODPOWIEDŹ</button>
+                        <button onclick="showHint3('hint3')">PODPOWIEDŹ 1</button>
+                        <button onclick="showHint3('hint3_2')">PODPOWIEDŹ 2</button>
                         <div id="hint3"></div>
+                        <div id="hint3_2"></div>
                         <div id="result"></div>
                         ${backButton}
                     `;
@@ -209,6 +213,10 @@
             }
         }
 
+        function showHint1() {
+            document.getElementById('hint1').innerText = "Eksperyment";
+        }
+
         function check2() {
             const input = document.getElementById('input2').value;
             const result = document.getElementById('result');
@@ -233,8 +241,13 @@
             }
         }
 
-        function showHint3() {
-            document.getElementById('hint3').innerText = "Album ze zdjęciami";
+        function showHint3(hintId) {
+            const hint = document.getElementById(hintId);
+            if (hintId === 'hint3') {
+                hint.innerText = "Album ze zdjęciami";
+            } else if (hintId === 'hint3_2') {
+                hint.innerText = "K6";
+            }
         }
 
         function showHint(hintId) {
