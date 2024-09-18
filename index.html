@@ -111,6 +111,16 @@
             font-size: 18px;
             max-width: 80%;
         }
+
+        .stich {
+            width: 600px;
+            height: auto;
+        }
+
+        .map {
+            width: 800px;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -138,7 +148,7 @@
                     break;
                 case 1:
                     pageContent = `
-                        <img src="public/Stich.png" alt="Stich">
+                        <img class="stich" src="public/Stich.png" alt="Stich">
                         <input type="text" id="input1">
                         <button onclick="check1()">SPRAWDŹ</button>
                         <div id="result"></div>
@@ -147,7 +157,7 @@
                     break;
                 case 2:
                     pageContent = `
-                        <img src="public/mapa.png" alt="Mapa">
+                        <img class="map" src="public/mapa.png" alt="Mapa">
                         <input type="text" id="input2">
                         <button onclick="check2()">SPRAWDŹ</button>
                         <button onclick="showHint2()">PODPOWIEDŹ</button>
